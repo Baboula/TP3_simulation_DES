@@ -64,7 +64,7 @@ class Batiment:
                 print(env.now, " : L'individu ", new_user.id, " attend au RDC")
                 cpt += 1
             id += 1
-            print("le nombre d'utilisateurs créés est:",cpt)
+            print("le nombre d'utilisateurs créer par la simulation est:",cpt)
 
 
 class Individu:
@@ -115,7 +115,7 @@ class Ascenseur:
         eta_out = abs((user.expected - self.e_current)*self.speed) #Temps pour que l'ascenceur depose l'individu au bon etage
         yield env.timeout(eta_out) #On bloque l'ascenceur tant qu'il n'a pas deposé l'individu   
         self.e_current = user.expected #definir le nouvel etage ou se trouve l'ascenceur       
-        print(env.now, " :l'ascenseur ", self.id, " déposer l'individu  ", user.id, " à l'étage |", self.e_current, "| temps nécessaire ", eta_out)
+        print(env.now, " :l'ascenseur ", self.id, " dépose l'individu  ", user.id, " à l'étage |", self.e_current, "| temps nécessaire ", eta_out , "s")
         self.shaft.remove(user) # L'utilisateur arrive a son etage on le retire de la liste          
         if user.is_leaving is True :
             user.leaving_time = env.now
@@ -129,7 +129,7 @@ class Ascenseur:
 
     def idle(self, env):
         eta_out = abs((3 - self.e_current)*self.speed)
-        print(env.now, " : Ascenseur ",self.id, " IDLE à l'étage 3, à pris :", eta_out)
+        print(env.now, " : Ascenseur ",self.id, " IDLE à l'étage 3, à pris :", eta_out, "s")
         
         yield env.timeout(eta_out)
         self.e_current = 3

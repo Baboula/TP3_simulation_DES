@@ -8,12 +8,12 @@ import numpy.random as rnd
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-a", "--ascenseur", type=int, help="spécifie le nombre d'ascenseurs", default=1)
-parser.add_argument("-c", "--capacité", type=int, help="Specifie la capacité de l'ascenseur", default=1)
-parser.add_argument("-v", "--vitesse", type=int, help="Specifie la vitesse  de l'ascenseur ", default=10)
+parser.add_argument("-c", "--capacité", type=int, help="Spécifie la capacité de l'ascenseur", default=1)
+parser.add_argument("-v", "--vitesse", type=int, help="Spécifie la vitesse  de l'ascenseur ", default=10)
 parser.add_argument("-o", "--ordonnancement", type=str, help="Spécifie l'ordonnancement utilisé par l'ascenseur", default="FCFS")
 parser.add_argument("-i", "--idle", type=bool, help="définie si l'ascenseur utilise l'idle ou non", default=False)
-parser.add_argument("-l", "--lamb", type=float, help="Specifie la valeur du lambda", default=0.5)
-parser.add_argument("-d", "--durée", type=int, help="Specifie la durée de simulation", default=10000)
+parser.add_argument("-l", "--lamb", type=float, help="Spécifie la valeur du lambda", default=0.5)
+parser.add_argument("-d", "--durée", type=int, help="Sécifie la durée de simulation", default=10000)
 
 args = parser.parse_args()
 
@@ -43,7 +43,7 @@ def print_by_expected(list):
 def getAllResult():
     
     for user in RESTE:
-        print("L'individu ", user.id ," temps d'arriver:", user.arrival_time ," temps pour monter", (user.waiting_time_up - user.arrival_time)," temps pour redescendre :", (user.waiting_time_down - user.leaving_time_call) ," quitte le batiment à :",  user.leaving_time)
+        print("L'individu ", user.id ," temps d'arriver:", user.arrival_time, "s" ," temps pour monter", (user.waiting_time_up - user.arrival_time), "s", " temps pour redescendre :", (user.waiting_time_down - user.leaving_time_call), "s" ," quitte le batiment à :",  user.leaving_time, "s")
 
 
 class Batiment:
@@ -61,7 +61,7 @@ class Batiment:
             if env.now < int(DUREE / (1.05)) : #Empeche de nouveau individus de monter pour pouvoir fermer le batiment
                 new_user = Individu(env, id)
                 ATTENTE.append(new_user)
-                print(env.now, " : L'individu ", new_user.id, " attend au RDC")
+                print(env.now, " : l'individu ", new_user.id, " attend au RDC")
                 cpt += 1
             id += 1
             print("le nombre d'utilisateurs créer par la simulation est:",cpt)
@@ -98,7 +98,7 @@ class Individu:
                 EN_MARCHE.remove(self) #Travail terminé l'utilisateur se retire de la liste USER_WORKING
             if self.leaving_time != 0:
                 self.leaving_time = env.now
-                print(env.now, " : L'individu ", self.id, "quitte les lieux")
+                print(env.now, " : l'individu ", self.id, "quitte les lieux")
                 break
  
 class Ascenseur:
@@ -129,7 +129,7 @@ class Ascenseur:
 
     def idle(self, env):
         eta_out = abs((3 - self.e_current)*self.speed)
-        print(env.now, " : Ascenseur ",self.id, " IDLE à l'étage 3, à pris :", eta_out, "s")
+        print(env.now, " : ascenseur ",self.id, " IDLE à l'étage 3, à pris :", eta_out, "s")
         
         yield env.timeout(eta_out)
         self.e_current = 3
@@ -147,10 +147,10 @@ class Ascenseur:
             selected_user = ATTENTE.popleft() #On defile le premier individu en attente
             self.shaft.append(selected_user) #On enfile le premier individu dans notre cage d'ascenceur
             eta_in = abs((self.e_current - selected_user.current)*self.speed) #Temps pour que l'ascenceur rejoigne l'individu au bon etage
-            print(env.now, " : L'individu", selected_user.id, "appel l'ascenseur ", self.id, " de |", selected_user.current, "| pour atteindre |", selected_user.expected, "|")
+            print(env.now, " : l'individu", selected_user.id, "appel l'ascenseur ", self.id, " à l'étage |", selected_user.current, "| pour atteindre l'étage |", selected_user.expected, "|")
             yield env.timeout(eta_in) #On bloque l'ascenceur tant qu'il n'a pas atteint l'individu
             self.e_current = selected_user.current            
-            print(env.now, " : L'ascenseur ", self.id, " prend l'individu", selected_user.id, "à l'étage |",self.e_current,"| operation éffectuée en ", eta_in)
+            print(env.now, " : l'ascenseur ", self.id, " prend l'individu", selected_user.id, "à l'étage |",self.e_current,"| l'operation est éffectuée en ", eta_in, "s")
             if selected_user.is_leaving is True:
                 selected_user.waiting_time_down = env.now
             elif selected_user.is_leaving is False:
@@ -183,10 +183,10 @@ class Ascenseur:
             ATTENTE.remove(selected_user) #On defile le premier individu en attente
             self.shaft.append(selected_user) #On enfile le premier individu dans notre cage d'ascenceur
             eta_in = abs((self.e_current - selected_user.current)*self.speed) #Temps pour que l'ascenceur rejoigne l'individu au bon etage
-            print(env.now, " : L'individu ", selected_user.id, " appel l'ascenseur ", self.id, " de |", selected_user.current, "| pour atteindre |", selected_user.expected, "|")
+            print(env.now, " : l'individu ", selected_user.id, " appel l'ascenseur ", self.id, " à l'étage |", selected_user.current, "| pour atteindre l'étage |", selected_user.expected, "|")
             yield env.timeout(eta_in)
             self.e_current = selected_user.current            
-            print(env.now, " : L'ascenseur ", self.id, " prend l'individu ", selected_user.id, "à l'étage |",self.e_current," | operation éffectuée en  ", eta_in)
+            print(env.now, " : L'ascenseur ", self.id, " prend l'individu ", selected_user.id, "à l'étage |",self.e_current," | l'operation est éffectuée en:  ", eta_in, "s")
             for user in list(ATTENTE):
                 if len(list(self.shaft)) < CAPACITE:
                     if user.current == selected_user.current:
@@ -214,7 +214,7 @@ class Ascenseur:
             yield env.process(self.move(env, chosen_user))
         
     def run(self, env):
-        print(env.now ," : L'ascenseur ",self.id," est en marche")
+        print(env.now ," : l'ascenseur ",self.id," est en marche")
         while True :
             yield env.timeout(1)
             if(args.ordonnancement == "FCFS"):  

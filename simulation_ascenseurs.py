@@ -43,7 +43,7 @@ def print_by_expected(list):
 def getAllResult():
     
     for user in RESTE:
-        print("L'individu ", user.id ," temps d'arriver:", user.arrival_time, "s" ," temps pour monter", (user.waiting_time_up - user.arrival_time), "s", " temps pour redescendre :", (user.waiting_time_down - user.leaving_time_call), "s" ," quitte le batiment à :",  user.leaving_time, "s")
+        print("L'individu ", user.id ," temps d'arriver:", user.arrival_time, "s" ," temps pour prendre l'ascenseur à l'arrivé", (user.waiting_time_up - user.arrival_time), "s", " temps pour prendre l'ascenseur afin de sortir:", (user.waiting_time_down - user.leaving_time_call), "s" ," quitte le batiment à :",  user.leaving_time, "s")
 
 
 class Batiment:
@@ -73,7 +73,7 @@ class Individu:
         self.is_waiting = True
         self.is_working = False
         self.is_leaving = False
-        self.working_time = random.choice(range(50,70))
+        self.working_time = random.choice(range(3000,4200)) # Un individu travail durant 60minutes en moyenne ce qui équivaut à 3600 secondes
         self.arrival_time = env.now
         self.waiting_time_up = 0 #Contient le temps d'attente pour monter dans l'ascenceur + temps perdu a attendre que les autres passagers s'arretent a leurs arrêts
         self.waiting_time_down = 0
@@ -87,7 +87,7 @@ class Individu:
         while True:
             yield env.timeout(1)
             if(self.is_working == True):
-                print(env.now, " : l'individu ", self.id, " arrive au travail et commence son shift")
+                print(env.now, " : l'individu ", self.id, "commence son travail")
                 yield env.timeout(self.working_time)
                 print(env.now, " : l'individu ", self.id, " à fini son travail")
                 self.is_working = False

@@ -13,7 +13,7 @@ parser.add_argument("-v", "--vitesse", type=int, help="Spécifie la vitesse  de 
 parser.add_argument("-o", "--ordonnancement", type=str, help="Spécifie l'ordonnancement utilisé par l'ascenseur", default="FCFS")
 parser.add_argument("-i", "--idle", type=bool, help="définie si l'ascenseur utilise l'idle ou non", default=False)
 parser.add_argument("-l", "--lamb", type=float, help="Spécifie la valeur du lambda", default=0.5)
-parser.add_argument("-d", "--durée", type=int, help="Sécifie la durée de simulation", default=10000)
+parser.add_argument("-d", "--durée", type=int, help="Spécifie la durée de simulation", default=10000)
 
 args = parser.parse_args()
 
